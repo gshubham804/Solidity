@@ -30,11 +30,24 @@ contract Lottery{
         require(manager == msg.sender, "You are not the manager");
         require(players.length >= 3, "Players are less than 3");
 
+        // Run these three lines for generateCountOfWinners() function returns and divide the totalfund
+        // between these winners then distribute
         uint index = random() % players.length;
         winner = players[index];
         winner.transfer(getBalance());
 
         // Reset the state for the next round
         players = new address payable[](0) ;
+    }
+
+    // Dynamic number of winners
+    function generateCountOfWinners() internal view returns(uint){
+         if (players.length <= 10) {
+        return 1;
+    } else if (players.length <= 20) {
+        return 2;
+    } else {
+        return 3; // Max 3 winners for more than 20 players
+    }
     }
 }
